@@ -22,28 +22,14 @@
             background: #d2d1e6;
         }
         
-        /* Reveal Animations */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        
-        /* Floating Animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        .floating-hero { animation: float 6s ease-in-out infinite; }
-
         /* Enhanced Hover Effects */
         .card-hover { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .card-hover:hover { 
-            transform: translateY(-8px) scale(1.03); 
             box-shadow: 0 25px 50px -12px rgba(82, 71, 230, 0.15);
         }
         
         .btn-hover { transition: all 0.3s ease; position: relative; overflow: hidden; }
         .btn-hover:hover { 
-            transform: scale(1.05); 
             box-shadow: 0 0 20px rgba(82, 71, 230, 0.4);
         }
 
@@ -62,7 +48,45 @@
         .nav-link:hover::after { width: 100%; }
 
         /* Smooth Theme Transition */
-        body, section, div, h1, h2, h3, h4, p, span, a { transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease; }</style>
+        body, section, div, h1, h2, h3, h4, p, span, a { transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease; }
+
+        /* Three.js hero background */
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cursor glow */
+        .glow-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: screen;
+        }
+        .glow-dot {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 9999px;
+            filter: blur(40px);
+            background: radial-gradient(circle, rgba(82, 71, 230, 0.35) 0%, rgba(82, 71, 230, 0) 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+        .glow-area {
+            position: relative;
+            overflow: hidden;
+        }</style>
 </head>
 <body class="bg-background-light text-slate-900 font-display">
 <!-- Navigation Bar -->
@@ -87,7 +111,10 @@
 </header>
 <main class="max-w-7xl mx-auto px-6">
 <!-- Hero Section -->
-<section class="py-20 flex flex-col items-center text-center reveal active" id="home">
+<section class="py-20 flex flex-col items-center text-center reveal active relative overflow-hidden glow-area" id="home">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+<div class="glow-layer" data-glow-layer="hero"><div class="glow-dot"></div></div>
+<div class="hero-content w-full flex flex-col items-center text-center">
 <div class="w-40 h-40 rounded-full border-4 border-primary/20 p-1 mb-8 floating-hero">
 <img class="w-full h-full object-cover rounded-full shadow-lg" data-alt="Professional headshot of a young male student smiling" src="IMG_20240531_154319_840.jpg" style=""/>
 </div>
@@ -97,6 +124,7 @@
 <div class="flex flex-wrap justify-center gap-4">
 <a href="#projects" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-primary/25 hover:-translate-y-1 transition-transform btn-hover reveal" style="">View Projects</a>
 <a href="SDE_CV_FINAL_UPDATED.pdf" download class="border-2 border-primary text-primary px-8 py-4 rounded-xl font-bold hover:bg-primary/5 transition-colors btn-hover reveal" style="">Download Resume</a>
+</div>
 </div>
 </section>
 <!-- About Me Section -->
@@ -110,22 +138,22 @@
 <p class="text-slate-600 leading-relaxed" style="">Along with academics, I actively work on personal projects to gain practical experience and better understand real-world software systems.</p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal" style="transition-delay: 0.1s;">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal about-card" style="transition-delay: 0.1s;">
 <span class="material-symbols-outlined text-primary mb-3" style="">school</span>
 <h3 class="font-bold mb-1" style="">Academic</h3>
 <p class="text-sm text-slate-500" style="">Focused on DSA, backend development, and system design.</p>
 </div>
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal" style="transition-delay: 0.2s;">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal about-card" style="transition-delay: 0.2s;">
 <span class="material-symbols-outlined text-primary mb-3" style="">rocket_launch</span>
 <h3 class="font-bold mb-1" style="">Career Goals</h3>
 <p class="text-sm text-slate-500" style="">Aiming for a Software Developer role in scalable systems.</p>
 </div>
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal" style="transition-delay: 0.3s;">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal about-card" style="transition-delay: 0.3s;">
 <span class="material-symbols-outlined text-primary mb-3" style="">favorite</span>
 <h3 class="font-bold mb-1" style="">Interests</h3>
 <p class="text-sm text-slate-500" style="">Competitive programming, Algorithms,Music,Badminton</p>
 </div>
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal" style="transition-delay: 0.4s;">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm reveal about-card" style="transition-delay: 0.4s;">
 <span class="material-symbols-outlined text-primary mb-3" style="">lightbulb</span>
 <h3 class="font-bold mb-1" style="">Mindset</h3>
 <p class="text-sm text-slate-500" style="">Problem solver with a growth-oriented approach.</p>
@@ -138,7 +166,7 @@
 <h2 class="text-3xl font-bold mb-12 text-center" style="">Education</h2>
 <div class="relative timeline-line max-w-4xl mx-auto pl-12 space-y-12">
 <!-- Education Item 1 -->
-<div class="relative">
+<div class="relative edu-item">
 <div class="absolute -left-[50px] top-0 w-10 h-10 rounded-full bg-primary border-4 border-white flex items-center justify-center shadow-md">
 <span class="material-symbols-outlined text-white text-sm" style="">school</span>
 </div>
@@ -168,7 +196,7 @@
 </div>
 </div>
 <!-- Education Item 2 -->
-<div class="relative">
+<div class="relative edu-item">
 <div class="absolute -left-[50px] top-0 w-10 h-10 rounded-full bg-slate-300 border-4 border-white flex items-center justify-center shadow-md">
 <span class="material-symbols-outlined text-white text-sm" style="">history_edu</span>
 </div>
@@ -187,7 +215,7 @@
 </div>
 </div>
 <!-- Education Item 3 -->
-<div class="relative">
+<div class="relative edu-item">
 <div class="absolute -left-[50px] top-0 w-10 h-10 rounded-full bg-slate-200 border-4 border-white flex items-center justify-center shadow-md">
 <span class="material-symbols-outlined text-white text-sm" style="">school</span>
 </div>
@@ -211,7 +239,7 @@
 <h2 class="text-3xl font-bold mb-12 text-center" style="">Technical Skills</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:grid-cols-3">
 <!-- Programming Languages -->
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal skill-card">
 <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2" style="">
 <span class="material-symbols-outlined text-primary text-xl" style="">code</span> Languages
                     </h3>
@@ -225,14 +253,14 @@
 </div>
 </div>
 <!-- Tools & Frameworks -->
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal skill-card">
 <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2" style="">
 <span class="material-symbols-outlined text-primary text-xl" style="">terminal</span> Frameworks
                     </h3>
 <div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">SpringBoot</span></div>
 </div>
 <!-- Databases -->
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal skill-card">
 <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2" style="">
 <span class="material-symbols-outlined text-primary text-xl" style="">database</span> Databases &amp; Tools
                     </h3>
@@ -244,20 +272,21 @@
 <span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Microsoft Excel</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">PowerBI</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">VS Code</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Jupyter Notebook</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Intellij Idea</span></div>
 </div>
 <!-- Soft Skills -->
-<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal skill-card">
 <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2" style="">
 <span class="material-symbols-outlined text-primary text-xl" style="">groups</span> Soft Skills
                     </h3>
 <div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Problem Solving</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Teamwork</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Adaptability</span></div>
-</div><div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal"><h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2" style=""><span class="material-symbols-outlined text-primary text-xl" style="">menu_book</span> Core CS Concepts</h3><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Data Structures and Algorithms</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">OOP</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Operating Systems</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Computer Networks</span></div></div>
+</div><div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm flex flex-col h-full card-hover reveal skill-card"><h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2" style=""><span class="material-symbols-outlined text-primary text-xl" style="">menu_book</span> Core CS Concepts</h3><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Data Structures and Algorithms</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">OOP</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Operating Systems</span><span class="px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-lg" style="">Computer Networks</span></div></div>
 </div>
 </section>
 <!-- Projects Section -->
-<section class="py-20 reveal active" id="projects">
+<section class="py-20 reveal active glow-area" id="projects">
+<div class="glow-layer" data-glow-layer="projects"><div class="glow-dot"></div></div>
 <h2 class="text-3xl font-bold mb-12 text-center" style="">Featured Projects</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 <!-- Project 1 -->
-<div class="bg-white rounded-xl border border-primary/10 overflow-hidden shadow-sm hover:shadow-xl transition-all group card-hover reveal">
+<div class="bg-white rounded-xl border border-primary/10 overflow-hidden shadow-sm hover:shadow-xl transition-all group card-hover reveal project-card">
 <div class="h-48 bg-primary/10 relative">
 <img  class="w-full h-full object-cover" data-alt="Modern web dashboard interface with colorful charts" src="banking managament photo.jpg" style=""/>
 </div>
@@ -281,7 +310,7 @@
 </div>
 </div>
 <!-- Project 2 -->
-<div class="bg-white rounded-xl border border-primary/10 overflow-hidden shadow-sm hover:shadow-xl transition-all group card-hover reveal">
+<div class="bg-white rounded-xl border border-primary/10 overflow-hidden shadow-sm hover:shadow-xl transition-all group card-hover reveal project-card">
 <div class="h-48 bg-primary/10">
 <img alt="Project 2" class="w-full h-full object-cover" data-alt="Electronic circuit board macro photography" src="sales analysis photo.webp" style=""/>
 </div>
@@ -306,11 +335,12 @@
 </div>
 </section>
 <!-- Certificates Section -->
-<section class="py-20 border-t border-primary/10 reveal active" id="certificates">
+<section class="py-20 border-t border-primary/10 reveal active glow-area" id="certificates">
+<div class="glow-layer" data-glow-layer="certificates"><div class="glow-dot"></div></div>
 <h2 class="text-3xl font-bold mb-12 text-center" style="">Certificates</h2>
 
 <a href="YOUR_CERTIFICATE_LINK" target="_blank">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal certificate-card">
 <div class="bg-primary/5 rounded-lg h-32 mb-4 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-4xl" style="">verified</span>
 </div>
@@ -320,7 +350,7 @@
 </a>
 
 <a href="https://lpucolab438.examly.io/certificate/U2FsdGVkX1%2BfvKKFmW5EMA1Eb8R7Fg7kV9jorF2nNPk%3D" target="_blank">
-<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal">
+<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal certificate-card">
 <div class="bg-primary/5 rounded-lg h-32 mb-4 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-4xl" style="">verified</span>
 </div>
@@ -330,7 +360,7 @@
 </a>
 
 <a href="https://lpucolab438.examly.io/certificate/U2FsdGVkX19wKb1eOrHeox%2F1gwdvTMzpOnjhAIy8mjw%3D" target="_blank">
-<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal">
+<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal certificate-card">
 <div class="bg-primary/5 rounded-lg h-32 mb-4 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-4xl" style="">verified</span>
 </div>
@@ -340,7 +370,7 @@
 </a>
 
 <a href="https://lpucolab438.examly.io/certificate/U2FsdGVkX1%2B7rFlpz5TK6m%2FmINkyamJOU7xtPMgT2bo%3D" target="_blank">
-<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal">
+<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal certificate-card">
 <div class="bg-primary/5 rounded-lg h-32 mb-4 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-4xl" style="">verified</span>
 </div>
@@ -350,7 +380,7 @@
 </a>
 
 <a href="https://www.coursera.org/account/accomplishments/verify/Q03LAMVBAF3I" target="_blank">
-<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal">
+<div class="bg-white p-4 rounded-xl border border-primary/5 shadow-sm text-center card-hover reveal certificate-card">
 <div class="bg-primary/5 rounded-lg h-32 mb-4 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-4xl" style="">verified</span>
 </div>
@@ -541,20 +571,266 @@ class="bg-primary text-white px-10 py-5 rounded-2xl font-black text-xl flex item
 </div>
 </div>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.164.1/three.min.js"></script>
 <script>
-        const observerOptions = {
-            root: null,
-            threshold: 0.1,
-            rootMargin: '0px'
-        };
+        (() => {
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const gsapReady = typeof gsap !== "undefined";
+            const scrollTriggerReady = typeof ScrollTrigger !== "undefined";
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
+            if (gsapReady && scrollTriggerReady && !prefersReducedMotion) {
+                gsap.registerPlugin(ScrollTrigger);
+            }
+
+            const selectAll = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+            const clamp = (min, max, value) => Math.min(max, Math.max(min, value));
+
+            const initHeroAnimation = () => {
+                if (!gsapReady || prefersReducedMotion) return;
+                const hero = document.querySelector("#home");
+                if (!hero) return;
+
+                const image = hero.querySelector(".floating-hero");
+                const title = hero.querySelector("h1");
+                const subtitle = hero.querySelector("p.text-xl");
+                const desc = hero.querySelector("p.max-w-2xl");
+                const buttons = selectAll("#home .btn-hover");
+
+                const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
+                tl.from(image, { scale: 0.9, opacity: 0, duration: 0.9 })
+                    .from(title, { y: 24, opacity: 0 }, "-=0.5")
+                    .from(subtitle, { y: 18, opacity: 0 }, "-=0.5")
+                    .from(desc, { y: 14, opacity: 0 }, "-=0.45")
+                    .from(buttons, { y: 16, opacity: 0, stagger: 0.12 }, "-=0.35");
+
+                if (image) {
+                    gsap.to(image, { y: -10, duration: 4, yoyo: true, repeat: -1, ease: "sine.inOut" });
                 }
-            });
-        }, observerOptions);
+            };
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            const initScrollAnimations = () => {
+                if (!gsapReady || !scrollTriggerReady || prefersReducedMotion) return;
+
+                const aboutCards = selectAll(".about-card");
+                gsap.set(aboutCards, { opacity: 0, y: 24 });
+                ScrollTrigger.batch(aboutCards, {
+                    start: "top 85%",
+                    onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, stagger: 0.12, duration: 0.7, ease: "power2.out" })
+                });
+
+                const eduCards = selectAll(".edu-item .card-hover");
+                eduCards.forEach((card, index) => {
+                    const fromX = index % 2 === 0 ? -50 : 50;
+                    gsap.set(card, { opacity: 0, x: fromX });
+                    ScrollTrigger.create({
+                        trigger: card,
+                        start: "top 85%",
+                        onEnter: () => gsap.to(card, { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }),
+                        onLeaveBack: () => gsap.set(card, { x: fromX, opacity: 0 })
+                    });
+                });
+
+                const skillCards = selectAll(".skill-card");
+                gsap.set(skillCards, { opacity: 0, scale: 0.95 });
+                ScrollTrigger.batch(skillCards, {
+                    start: "top 85%",
+                    onEnter: batch => gsap.to(batch, { opacity: 1, scale: 1, stagger: 0.12, duration: 0.7, ease: "power2.out" })
+                });
+
+                const projectCards = selectAll(".project-card");
+                gsap.set(projectCards, { opacity: 0, scale: 0.96, rotate: 1.5 });
+                ScrollTrigger.batch(projectCards, {
+                    start: "top 85%",
+                    onEnter: batch => gsap.to(batch, { opacity: 1, scale: 1, rotate: 0, stagger: 0.15, duration: 0.75, ease: "power2.out" })
+                });
+
+                const certificateCards = selectAll(".certificate-card");
+                gsap.set(certificateCards, { opacity: 0, y: 20 });
+                ScrollTrigger.batch(certificateCards, {
+                    start: "top 85%",
+                    onEnter: batch => gsap.to(batch, {
+                        opacity: 1,
+                        y: 0,
+                        stagger: { each: 0.08, from: "center" },
+                        duration: 0.7,
+                        ease: "power2.out"
+                    })
+                });
+
+                ScrollTrigger.refresh();
+            };
+
+            const initHoverAnimations = () => {
+                if (!gsapReady || prefersReducedMotion) return;
+
+                const hoverTargets = selectAll(".card-hover, .btn-hover");
+                hoverTargets.forEach(el => {
+                    el.addEventListener("mouseenter", () => {
+                        gsap.to(el, { y: -6, scale: 1.02, duration: 0.2, ease: "power2.out" });
+                    });
+                    el.addEventListener("mouseleave", () => {
+                        gsap.to(el, { y: 0, scale: 1, duration: 0.25, ease: "power2.out" });
+                    });
+                });
+
+                const navLinks = selectAll(".nav-link");
+                navLinks.forEach(link => {
+                    link.addEventListener("mouseenter", () => {
+                        gsap.to(link, { y: -2, duration: 0.2, ease: "power2.out" });
+                    });
+                    link.addEventListener("mouseleave", () => {
+                        gsap.to(link, { y: 0, duration: 0.2, ease: "power2.out" });
+                    });
+                });
+            };
+
+            const initGlow = () => {
+                if (!gsapReady || prefersReducedMotion) return;
+                const layers = selectAll(".glow-layer");
+
+                layers.forEach(layer => {
+                    const dot = layer.querySelector(".glow-dot");
+                    const area = layer.closest(".glow-area");
+                    if (!dot || !area) return;
+
+                    const setX = gsap.quickTo(dot, "left", { duration: 0.3, ease: "power2.out" });
+                    const setY = gsap.quickTo(dot, "top", { duration: 0.3, ease: "power2.out" });
+                    const setOpacity = gsap.quickTo(dot, "opacity", { duration: 0.3, ease: "power2.out" });
+
+                    area.addEventListener("mouseenter", () => setOpacity(1));
+                    area.addEventListener("mouseleave", () => setOpacity(0));
+                    area.addEventListener("mousemove", (event) => {
+                        const rect = area.getBoundingClientRect();
+                        const x = clamp(0, rect.width, event.clientX - rect.left);
+                        const y = clamp(0, rect.height, event.clientY - rect.top);
+                        setX(x);
+                        setY(y);
+                    });
+                });
+            };
+
+            const initThreeHero = () => {
+                const canvas = document.getElementById("hero-canvas");
+                const hero = document.getElementById("home");
+                if (!canvas || !hero || prefersReducedMotion || typeof THREE === "undefined") return;
+
+                const renderer = new THREE.WebGLRenderer({
+                    canvas,
+                    alpha: true,
+                    antialias: true,
+                    powerPreference: "high-performance"
+                });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+                camera.position.z = 10;
+
+                const group = new THREE.Group();
+                scene.add(group);
+
+                const count = 140;
+                const positions = new Float32Array(count * 3);
+                for (let i = 0; i < count; i += 1) {
+                    const i3 = i * 3;
+                    positions[i3] = (Math.random() - 0.5) * 12;
+                    positions[i3 + 1] = (Math.random() - 0.5) * 8;
+                    positions[i3 + 2] = (Math.random() - 0.5) * 6;
+                }
+
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+                const material = new THREE.PointsMaterial({
+                    color: 0x5247e6,
+                    size: 0.06,
+                    transparent: true,
+                    opacity: 0.35
+                });
+
+                const points = new THREE.Points(geometry, material);
+                group.add(points);
+
+                scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+
+                let targetX = 0;
+                let targetY = 0;
+                let currentX = 0;
+                let currentY = 0;
+                const onMouseMove = (event) => {
+                    const rect = hero.getBoundingClientRect();
+                    const x = (event.clientX - rect.left) / rect.width - 0.5;
+                    const y = (event.clientY - rect.top) / rect.height - 0.5;
+                    targetX = x * 0.6;
+                    targetY = -y * 0.4;
+                };
+                hero.addEventListener("mousemove", onMouseMove);
+
+                const resize = () => {
+                    const rect = hero.getBoundingClientRect();
+                    renderer.setSize(rect.width, rect.height, false);
+                    camera.aspect = rect.width / rect.height;
+                    camera.updateProjectionMatrix();
+                };
+                resize();
+                window.addEventListener("resize", resize);
+
+                let isVisible = true;
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        isVisible = entry.isIntersecting;
+                        if (isVisible) start();
+                    });
+                }, { threshold: 0.1 });
+                observer.observe(hero);
+
+                let rafId;
+                const animate = () => {
+                    if (!isVisible) {
+                        rafId = null;
+                        return;
+                    }
+                    points.rotation.y += 0.0012;
+                    points.rotation.x += 0.0008;
+
+                    currentX += (targetX - currentX) * 0.05;
+                    currentY += (targetY - currentY) * 0.05;
+                    group.rotation.y = currentX;
+                    group.rotation.x = currentY;
+
+                    renderer.render(scene, camera);
+                    rafId = requestAnimationFrame(animate);
+                };
+
+                const start = () => {
+                    if (rafId) return;
+                    rafId = requestAnimationFrame(animate);
+                };
+
+                const stop = () => {
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                };
+
+                document.addEventListener("visibilitychange", () => {
+                    if (document.hidden) {
+                        stop();
+                    } else if (isVisible) {
+                        start();
+                    }
+                });
+
+                start();
+            };
+
+            initHeroAnimation();
+            initScrollAnimations();
+            initHoverAnimations();
+            initGlow();
+            initThreeHero();
+        })();
     </script></body></html>
